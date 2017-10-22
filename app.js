@@ -34,14 +34,14 @@ app.post('/', function (req, res) {    //line only need post / , not like facebo
 // generic function sending messages
 function sendMessage(replyToken, text) {
     let body = {
-        replyToken,
+        replyToken : replyToken,
         messages: [{
             type: 'text',
-            text,
+            text: text,
         }],
     };
 
-    let options = {
+    let options = {  //option 設定
         url: 'https://api.line.me/v2/bot/message/reply',
         method: 'POST',
         headers: {
