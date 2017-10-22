@@ -3,7 +3,8 @@ let bodyParser = require('body-parser')
 let request = require('request')
 let app = express()
 
-const CHANNEL_ACCESS_TOKEN = 'Your_Channel_Access_Token'
+const CHANNEL_ACCESS_TOKEN = 'i+YjNG5UG99IY7voXApOZP8rKO6rjVfQWfbhUO5mOGvIFUKa7bcUXQJjjtEPEQDGgR3NoIwCjeiK2n3F0z3mPYejaoEj74ILayJeaPdzGg/vlf7Qq1qetl8wxu2KyHsKI5hL1KfmzhCtNf4a03hOZQdB04t89/1O/w1cDnyilFU='
+//Your_Channel_Access_Token from line develope page
 const PORT = process.env.PORT || 3000
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -13,7 +14,21 @@ app.listen(PORT, function () {
 })
 
 // handler receiving messages
-app.post('/', function (req, res) {
+app.post('/', function (req, res) {    //line only need post / , not like facebook need get and post "/"
+    console.log(JSON.stringify(req.body, null, 2)) //print req body
+
+    let events = req.body.events;
+    events.forEach((event) => {    //使用以下這個群族取出回應資料
+        let replyToken = event.replyToken
+        let type = event.message.type
+        if (type === 'text') {
+            let text = event.message.text
+            sendMessage(replyToken, text)
+        } else {
+            sendMessage(replyToken, type)
+        }
+    })
+    res.send()
 })
 
 // generic function sending messages
